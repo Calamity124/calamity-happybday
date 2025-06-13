@@ -47,10 +47,22 @@
     }
 
     .no {
-      background-color: #fff;
+      background-color: white;
       color: #ff1493;
       border: 2px solid #ff1493;
       position: absolute;
+    }
+
+    .gif-button {
+      background-image: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHIxYzY3eWN3Y2M3NjB5dnU0OWV3NW9weWN4a3c3bXQycnNqamtrOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RPOCPisEmFKnvfKX9l/giphy.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: transparent;
+      border: 2px solid #ff1493;
+      border-radius: 10px;
+      width: 100px;
+      height: 100px;
     }
 
     .letter {
@@ -115,20 +127,10 @@
       }
     }
 
-    .balloon {
-      position: fixed;
-      bottom: -100px;
-      width: 30px;
-      height: 40px;
-      background-color: pink;
-      border-radius: 50% 50% 50% 50%;
-      animation: rise 5s linear forwards;
-      z-index: 0;
-    }
-
-    @keyframes rise {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-120vh); }
+    .reveal-btn {
+      margin-top: 10px;
+      background-color: #ff1493;
+      color: white;
     }
   </style>
 </head>
@@ -141,17 +143,16 @@
 
   <div class="letter" id="letter">
     <span id="typed"></span>
-    <br><br>
-    <button onclick="revealAll()" style="margin-top: 20px; background-color: #ff69b4; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 1em; cursor: pointer;">Reveal All ✨</button>
+    <br>
+    <button class="reveal-btn" onclick="revealFullLetter()">Reveal Full Letter ✨</button>
   </div>
 
   <audio autoplay loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-betterdays.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Kevin_MacLeod/Calming/Kevin_MacLeod_-_Comfortable_Mystery.mp3" type="audio/mp3">
   </audio>
 
-  <script>
-    const message = `Hi baks,
+ <script>
+  const message = `Hi baks,
 
 Happy birthday! I just want to wish you a wonderful day filled with happiness. It's been a while huhu 😔
 
@@ -170,75 +171,77 @@ Happy birthday ulit 💗
 With all my love,
 Dinosaur 💌`;
 
-    let typingInterval;
-    let i = 0;
-    let isTyping = false;
+  let i = 0;
+  let typingInterval;
+  let noClickCount = 0;
 
-    function showLetter() {
-      const letter = document.getElementById("letter");
-      const noBtn = document.getElementById("noBtn");
-      const typed = document.getElementById("typed");
+  function showLetter() {
+    const letter = document.getElementById("letter");
+    const noBtn = document.getElementById("noBtn");
+    const typed = document.getElementById("typed");
 
-      letter.style.display = "block";
-      noBtn.style.display = "none";
+    letter.style.display = "block";
+    noBtn.style.display = "none";
 
-      // Balloons
-      for (let i = 0; i < 15; i++) {
-        const balloon = document.createElement("div");
-        balloon.className = "balloon";
-        balloon.style.left = Math.random() * 100 + "vw";
-        balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 70%)`;
-        balloon.style.animationDelay = `${Math.random() * 1}s`;
-        document.body.appendChild(balloon);
-        setTimeout(() => balloon.remove(), 6000);
+    i = 0;
+    typed.textContent = "";
+
+    typingInterval = setInterval(() => {
+      if (i < message.length) {
+        typed.textContent += message.charAt(i);
+        i++;
+      } else {
+        clearInterval(typingInterval);
       }
+    }, 25);
+  }
 
-      typed.textContent = "";
-      i = 0;
-      isTyping = true;
-      typeWriter();
+  function revealFullLetter() {
+    clearInterval(typingInterval);
+    document.getElementById("typed").textContent = message;
+  }
+
+  function moveNo(button) {
+    const maxX = window.innerWidth - button.offsetWidth;
+    const maxY = window.innerHeight - button.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noClickCount++;
+
+    if (noClickCount === 2) {
+      button.textContent = "";
+      button.classList.add("gif-button");
     }
 
-    function typeWriter() {
-      const typed = document.getElementById("typed");
-      typingInterval = setTimeout(() => {
-        if (i < message.length) {
-          typed.textContent += message.charAt(i);
-          i++;
-          typeWriter();
-        } else {
-          isTyping = false;
-          typed.classList.remove("typed");
-        }
-      }, 25);
-    }
+    const scale = 1 + noClickCount * 0.1;
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
+    button.style.transform = `scale(${scale})`;
+  }
 
-    function revealAll() {
-      const typed = document.getElementById("typed");
-      if (isTyping) {
-        clearTimeout(typingInterval);
-        typed.textContent = message;
-        isTyping = false;
-      }
-    }
+  // 👇 This runs on page load to randomize initial position of the No button
+  window.onload = () => {
+    const button = document.getElementById("noBtn");
+    const maxX = window.innerWidth - button.offsetWidth;
+    const maxY = window.innerHeight - button.offsetHeight;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
+    button.style.position = 'absolute';
+  };
 
-    function moveNo(button) {
-      const x = Math.random() * (window.innerWidth - button.offsetWidth);
-      const y = Math.random() * (window.innerHeight - button.offsetHeight);
-      const scale = Math.random() * 1.5 + 1;
-      button.style.left = `${x}px`;
-      button.style.top = `${y}px`;
-      button.style.transform = `scale(${scale})`;
-    }
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 300);
+</script>
 
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }, 300);
-  </script>
 </body>
 </html>
