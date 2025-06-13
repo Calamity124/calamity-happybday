@@ -20,6 +20,7 @@
       color: #ff1493;
       font-size: 2.5em;
       z-index: 1;
+      text-align: center;
     }
 
     .button-container {
@@ -56,8 +57,8 @@
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 0 20px #ff99cc;
-      text-align: center;
-      max-width: 400px;
+      text-align: left;
+      max-width: 500px;
       line-height: 1.6;
       animation: fadeIn 1s ease-in-out;
       z-index: 1;
@@ -68,7 +69,6 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* Floating hearts */
     .heart {
       position: fixed;
       width: 20px;
@@ -113,18 +113,32 @@
 </head>
 <body>
   <h1>🎉 A Special Birthday Letter 🎂</h1>
+
   <div class="button-container">
     <button class="yes" onclick="showLetter()">Open the Letter 💌</button>
-    <button class="no" onclick="moveNo(this)">No 🙃</button>
+    <button class="no" id="noBtn" onclick="moveNo(this)">No 🙃</button>
   </div>
 
   <div class="letter" id="letter">
     <h2>Dear Alleyah,</h2>
     <p>
-      Happy Birthday!! 🎂💕 <br>
-      I hope you have a wonderful day filled with happiness and good energy. It's been a while huhu 😔<br>
-      Just wanted you to know that I’ll always be here if you ever need someone to lean on. <br>
-      Enjoy your special day and take care always. yk na ikaw pa rin haha kahit unnecesarry 'to 💖
+      Hi baks,<br><br>
+
+      Happy birthday! I just want to wish you a wonderful day filled with happiness. It's been a while huhu 😔<br>
+      You know na I’ll always be here for you when you need someone to rely on. Enjoy your day!<br><br>
+
+      It may not be a good time to say this, but I'm really sorry for everything that happened between us. 
+      Hindi ako nakapagsorry dati e :)) so dito ko na lang sasabihin (ignore this na lang). 
+      I really wish everything you want in the future will happen.<br><br>
+
+      Alam ko marami tayong pinagdaanan — good and bad. But kahit gano’n, I’m thankful na naging part ka ng life ko. 
+      You’ve helped me grow in so many ways, and I’ll always be grateful for that.<br><br>
+
+      I may not be part of your life the same way anymore, but I still genuinely wish you the best — 
+      sa life, sa goals mo, sa lahat-lahat. Sana matupad mo lahat ng dreams mo, at sana always happy ka (not balew ha).<br><br>
+
+      Stay kind, stay strong, and stay true to yourself.<br><br>
+      Happy birthday ulit 💗
     </p>
     <p>With all my love,<br>Dinosaur 💌</p>
   </div>
@@ -138,6 +152,7 @@
   <script>
     function showLetter() {
       document.getElementById('letter').style.display = 'block';
+      document.getElementById('noBtn').style.display = 'none'; // hides the "No" button
     }
 
     function moveNo(button) {
@@ -149,7 +164,6 @@
       button.style.transform = `scale(${scale})`;
     }
 
-    // Floating hearts
     setInterval(() => {
       const heart = document.createElement('div');
       heart.className = 'heart';
