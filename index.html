@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Happy Birthday Letter 💖</title>
+  <title>Happy Birthday 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive;
+      font-family: 'Comic Neue', cursive;
       background: linear-gradient(to right, #ffe6f0, #ffc2d1);
       height: 100vh;
       margin: 0;
@@ -14,28 +15,30 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      text-align: center;
+      padding: 20px;
     }
 
     h1 {
       color: #ff1493;
-      font-size: 2.5em;
-      z-index: 1;
-      text-align: center;
+      font-size: 2.2em;
+      margin-bottom: 20px;
     }
 
     .button-container {
-      margin-top: 30px;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
 
     button {
-      padding: 15px 30px;
+      padding: 15px 25px;
       font-size: 1.2em;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin: 10px;
     }
 
     .yes {
@@ -44,7 +47,7 @@
     }
 
     .no {
-      background-color: #ffffff;
+      background-color: #fff;
       color: #ff1493;
       border: 2px solid #ff1493;
       position: absolute;
@@ -53,15 +56,24 @@
     .letter {
       display: none;
       background-color: white;
-      color: #444;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #ff99cc;
-      text-align: left;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #ffc2d1;
+      font-size: 1.1em;
+      color: #333;
       max-width: 500px;
-      line-height: 1.6;
+      margin-top: 20px;
       animation: fadeIn 1s ease-in-out;
-      z-index: 1;
+      white-space: pre-wrap;
+    }
+
+    #typed {
+      border-right: 2px solid #ff69b4;
+      animation: blink 0.7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
 
     @keyframes fadeIn {
@@ -89,15 +101,8 @@
       border-radius: 50%;
     }
 
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
 
     @keyframes float {
       0% {
@@ -109,50 +114,112 @@
         opacity: 0;
       }
     }
+
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 30px;
+      height: 40px;
+      background-color: pink;
+      border-radius: 50% 50% 50% 50%;
+      animation: rise 5s linear forwards;
+      z-index: 0;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-120vh); }
+    }
   </style>
 </head>
 <body>
-  <h1>🎉 A Special Birthday Letter 🎂</h1>
-
+  <h1>🎉 Happy Birthday, Alleyah! 🎂</h1>
   <div class="button-container">
-    <button class="yes" onclick="showLetter()">Open the Letter 💌</button>
+    <button class="yes" onclick="showLetter()">Open your letter 💌</button>
     <button class="no" id="noBtn" onclick="moveNo(this)">No 🙃</button>
   </div>
 
   <div class="letter" id="letter">
-    <h2>Dear Alleyah,</h2>
-    <p>
-      Hi baks,<br><br>
-
-      Happy birthday! I just want to wish you a wonderful day filled with happiness. It's been a while huhu 😔<br>
-      You know na I’ll always be here for you when you need someone to rely on. Enjoy your day!<br><br>
-
-      It may not be a good time to say this, but I'm really sorry for everything that happened between us. 
-      Hindi ako nakapagsorry dati e :)) so dito ko na lang sasabihin (ignore this na lang). 
-      I really wish everything you want in the future will happen.<br><br>
-
-      Alam ko marami tayong pinagdaanan — good and bad. But kahit gano’n, I’m thankful na naging part ka ng life ko. 
-      You’ve helped me grow in so many ways, and I’ll always be grateful for that.<br><br>
-
-      I may not be part of your life the same way anymore, but I still genuinely wish you the best — 
-      sa life, sa goals mo, sa lahat-lahat. Sana matupad mo lahat ng dreams mo, at sana always happy ka (not balew ha).<br><br>
-
-      Stay kind, stay strong, and stay true to yourself.<br><br>
-      Happy birthday ulit 💗
-    </p>
-    <p>With all my love,<br>Dinosaur 💌</p>
+    <span id="typed"></span>
+    <br><br>
+    <button onclick="revealAll()" style="margin-top: 20px; background-color: #ff69b4; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 1em; cursor: pointer;">Reveal All ✨</button>
   </div>
 
-  <!-- Background music -->
   <audio autoplay loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+    <source src="https://www.bensound.com/bensound-music/bensound-betterdays.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
 
   <script>
+    const message = `Hi baks,
+
+Happy birthday! I just want to wish you a wonderful day filled with happiness. It's been a while huhu 😔
+
+You know na I’ll always be here for you when you need someone to rely on. Enjoy your day!
+
+It may not be a good time to say this, but I'm really sorry for everything that happened between us. Hindi ako nakapagsorry dati e :)) so dito ko na lang sasabihin (ignore this na lang). I really wish everything you want in the future will happen.
+
+Alam ko marami tayong pinagdaanan — good and bad. But kahit gano’n, I’m thankful na naging part ka ng life ko. You’ve helped me grow in so many ways, and I’ll always be grateful for that.
+
+I may not be part of your life the same way anymore, but I still genuinely wish you the best — sa life, sa goals mo, sa lahat-lahat. Sana matupad mo lahat ng dreams mo, at sana always happy ka (not balew ha).
+
+Stay kind, stay strong, and stay true to yourself.
+
+Happy birthday ulit 💗
+
+With all my love,
+Dinosaur 💌`;
+
+    let typingInterval;
+    let i = 0;
+    let isTyping = false;
+
     function showLetter() {
-      document.getElementById('letter').style.display = 'block';
-      document.getElementById('noBtn').style.display = 'none'; // hides the "No" button
+      const letter = document.getElementById("letter");
+      const noBtn = document.getElementById("noBtn");
+      const typed = document.getElementById("typed");
+
+      letter.style.display = "block";
+      noBtn.style.display = "none";
+
+      // Balloons
+      for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 70%)`;
+        balloon.style.animationDelay = `${Math.random() * 1}s`;
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 6000);
+      }
+
+      typed.textContent = "";
+      i = 0;
+      isTyping = true;
+      typeWriter();
+    }
+
+    function typeWriter() {
+      const typed = document.getElementById("typed");
+      typingInterval = setTimeout(() => {
+        if (i < message.length) {
+          typed.textContent += message.charAt(i);
+          i++;
+          typeWriter();
+        } else {
+          isTyping = false;
+          typed.classList.remove("typed");
+        }
+      }, 25);
+    }
+
+    function revealAll() {
+      const typed = document.getElementById("typed");
+      if (isTyping) {
+        clearTimeout(typingInterval);
+        typed.textContent = message;
+        isTyping = false;
+      }
     }
 
     function moveNo(button) {
@@ -165,10 +232,10 @@
     }
 
     setInterval(() => {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 6000);
     }, 300);
